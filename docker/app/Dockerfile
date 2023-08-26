@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM golang:1.17-alpine AS build
+FROM --platform=$BUILDPLATFORM golang:1.20-alpine AS build
 RUN apk --no-cache add \
   bash
 
@@ -15,6 +15,8 @@ COPY --from=build /src/bin/redis-operator /usr/local/bin
 RUN addgroup -g 1000 rf && \
   adduser -D -u 1000 -G rf rf && \
   chown rf:rf /usr/local/bin/redis-operator
-USER rf
+USER 0:0
+
+ENV GOCOVERDIR=/tmp/profile/
 
 ENTRYPOINT ["/usr/local/bin/redis-operator"]

@@ -98,6 +98,16 @@ image: deps-development
 	-f $(APP_DIR)/Dockerfile \
 	.
 
+IMG ?= zhangwt1997/redis-operator:coverage-0.1
+
+.PHONY: image-cov
+image-cov:
+	docker build --progress=plain -t $(IMG) -f docker/app/Dockerfile .
+
+.PHONY: publish-cov
+publish-cov:
+	docker push ${IMG}
+
 .PHONY: image-release
 image-release:
 	docker buildx build \
